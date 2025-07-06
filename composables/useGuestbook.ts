@@ -36,7 +36,7 @@ export function useGuestbook() {
     }
     const updatedGuestbook = { ...guestbook.value, pages: [...guestbook.value.pages] };
     updatedGuestbook.pages.push({ ...page, createdAt: dayjs().toISOString() });
-    await set(updatedGuestbook.id, updatedGuestbook, guestbookStore);
+    await set(updatedGuestbook.id, JSON.parse(JSON.stringify(updatedGuestbook)), guestbookStore);
     guestbook.value = updatedGuestbook;
   }
 
