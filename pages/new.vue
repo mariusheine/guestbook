@@ -5,7 +5,7 @@
     </template>
     <div class="flex flex-col space-y-4">
       <UFormField label="Titel" name="title">
-        <UInput v-model="guestbook.title" class="w-full"/>
+        <UInput v-model="guestbook.title" class="w-full" />
       </UFormField>
 
       <UFormField label="Beschreibe den Anlass des Gästebuches" name="description">
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { z } from "zod";
+import { z } from 'zod';
 
 const { createGuestbook } = useGuestbook();
 
@@ -44,17 +44,21 @@ const schema = z.object({
 type Schema = z.output<typeof schema>;
 
 const guestbook = reactive<Schema>({
-  title: "",
+  title: '',
 });
 
 const saving = ref(false);
 
 async function save() {
+  if (!schema.safeParse(guestbook).success) {
+    return;
+  }
   try {
     saving.value = true;
     const createdGuestbook = await createGuestbook(guestbook);
     await useRouter().replace(`/${createdGuestbook.id}`);
-  } finally {
+  }
+  finally {
     saving.value = false;
   }
 }

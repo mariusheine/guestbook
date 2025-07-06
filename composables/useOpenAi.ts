@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@vueuse/core';
 import OpenAI from 'openai';
 
-export const openAiApiKey = useLocalStorage<string | undefined>("guestbook:openAiApiKey", undefined);
+export const openAiApiKey = useLocalStorage<string | undefined>('guestbook:openAiApiKey', undefined);
 
 export function useOpenAi() {
   if (!openAiApiKey.value) {
@@ -23,7 +23,7 @@ export async function requestImage(prompt: string, context: string) {
     n: 1,
     size: '1792x1024',
     model: 'dall-e-3',
-    response_format: 'b64_json'
+    response_format: 'b64_json',
   });
   if (!response.data) {
     throw new Error('No image returned');

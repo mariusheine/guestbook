@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-4 w-full">
-    <UCard >
+    <UCard>
       <template #header>
         OpenAI Einstellungen
       </template>
@@ -23,12 +23,12 @@
       <URadioGroup v-model="colorModelSelection" :items="colorModeItems" />
     </UCard>
 
-    <UCard >
+    <UCard>
       <template #header>
         Speichernutzung
       </template>
-      <LoadingIndicator v-if="!storageDetails"/>
-      <div v-else="storageDetails">
+      <LoadingIndicator v-if="!storageDetails" />
+      <div v-else>
         <div>Genutzer Speicher: {{ storageDetails.used }} ({{ storageDetails.usedRelative }})</div>
         <div>Vorhandener Speicher: {{ storageDetails.total }}</div>
         <div>Freier Speicher: {{ storageDetails.free }}</div>
@@ -43,16 +43,16 @@ import LoadingIndicator from '~/components/LoadingIndicator.vue';
 
 const toast = useToast();
 
-const colorMode = useColorMode()
-const colorModeItems = ref<RadioGroupItem[]>([{ label: 'System', value: 'system' }, { label: 'Hell', value: 'light' }, { label: 'Dunkel', value: 'dark' }])
+const colorMode = useColorMode();
+const colorModeItems = ref<RadioGroupItem[]>([{ label: 'System', value: 'system' }, { label: 'Hell', value: 'light' }, { label: 'Dunkel', value: 'dark' }]);
 const colorModelSelection = computed({
   get() {
-    return colorMode.preference
+    return colorMode.preference;
   },
   set(newValue) {
-    colorMode.preference = newValue
-  }
-})
+    colorMode.preference = newValue;
+  },
+});
 
 const newApiKey = ref(openAiApiKey.value);
 
@@ -66,7 +66,7 @@ function saveOpenAiSettings() {
 
 const storageEstimation = ref<{ quota?: number; usage?: number }>();
 
-onMounted(async() => {
+onMounted(async () => {
   storageEstimation.value = await navigator.storage.estimate();
 });
 
@@ -92,7 +92,7 @@ const storageDetails = computed(() => {
     used: inMegabyte(storageEstimation.value.usage),
     usedRelative: inPercent(storageEstimation.value.usage, storageEstimation.value.usage),
     total: inMegabyte(storageEstimation.value.quota),
-    free: inMegabyte((storageEstimation.value.quota ?? Number.NaN) - (storageEstimation.value.usage ?? Number.NaN))
-  }
-})
+    free: inMegabyte((storageEstimation.value.quota ?? Number.NaN) - (storageEstimation.value.usage ?? Number.NaN)),
+  };
+});
 </script>

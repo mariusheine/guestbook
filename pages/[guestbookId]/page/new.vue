@@ -8,7 +8,7 @@
       </template>
       <div class="flex flex-col space-y-4">
         <UFormField label="Autor" name="author">
-          <UInput v-model="page.author" class="w-full"/>
+          <UInput v-model="page.author" class="w-full" />
         </UFormField>
 
         <UFormField label="Eintrag" name="content">
@@ -25,9 +25,7 @@
 
         <div class="text-gray-500">
           Zu deinem Eintrag wird nach dem Absenden ein Bild mit Hilfe von
-          <a href="https://openai.com/index/dall-e-3/" target="_blank"
-            >DALL·E 3</a
-          >
+          <a href="https://openai.com/index/dall-e-3/" target="_blank">DALL·E 3</a>
           ein Bild erstellt. Du kannst unabhängig von deinem Gästebucheintrag für
           die Bildgenerierung zusätzlichen Kontext angeben. Sei bitte vorsichtig
           mit Namen und sehr persönlichen Informationen!
@@ -64,18 +62,20 @@
             :disabled="renderingImage || selectedImage <= 0"
             class="disabled:bg-gray-500"
             @click="selectedImage = selectedImage - 1"
-            >Vorheriges Bild</UButton
           >
+            Vorheriges Bild
+          </UButton>
           <UButton
             :disabled="renderingImage || selectedImage >= imageStack.length - 1"
             class="disabled:bg-gray-500"
             @click="selectedImage = selectedImage + 1"
-            >Nächstes Bild</UButton
           >
+            Nächstes Bild
+          </UButton>
         </div>
         <UProgress v-if="renderingImage" animation="swing" />
         <template v-else-if="image">
-          <img :src="image" />
+          <img :src="image">
 
           <UButton
             class="justify-center disabled:bg-gray-500"
@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { z } from "zod";
+import { z } from 'zod';
 
 const { guestbook, addPage } = useGuestbook();
 
@@ -102,9 +102,9 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>;
 
-const page = reactive<Schema>({
+const page = ref<Schema>({
   author: undefined,
-  content: "",
+  content: '',
 });
 
 const renderingImage = ref(false);
@@ -120,7 +120,7 @@ const selectedImage = ref<number>(-1);
 
 watch(selectedImage, () => {
   imageContext.value = imageStack.value[selectedImage.value]?.context || '';
-})
+});
 
 const image = computed(() => {
   if (selectedImage.value < 0) {
@@ -132,13 +132,14 @@ const image = computed(() => {
 async function generateImage() {
   try {
     renderingImage.value = true;
-    const response = await requestImage(page.content, imageContext.value);
+    const response = await requestImage(page.value.content, imageContext.value);
     imageStack.value.push({
       imageUrl: response.url,
       context: imageContext.value,
     });
     selectedImage.value = imageStack.value.length - 1;
-  } finally {
+  }
+  finally {
     renderingImage.value = false;
   }
 }
@@ -146,15 +147,16 @@ async function generateImage() {
 const saving = ref(false);
 
 async function save() {
-  if (!guestbook.value) {
+  if (!guestbook.value || !schema.safeParse(page.value)) {
     return;
   }
   try {
     saving.value = true;
     const { imageUrl, context } = imageStack.value[selectedImage.value];
-    await addPage({ ...page, image: imageUrl, imageContext: context });
+    await addPage({ ...page.value, image: imageUrl, imageContext: context });
     await useRouter().replace(`/${guestbook.value.id}`);
-  } finally {
+  }
+  finally {
     saving.value = false;
   }
 }

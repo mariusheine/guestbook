@@ -1,7 +1,7 @@
 <template>
   <LoadingIndicator v-if="guestbooks === undefined" />
   <div v-else-if="guestbooks.length > 0" class="w-full max-h-full flex gap-4 items-center">
-    <UCard v-for="guestbook in guestbooks" class="flex-grow">
+    <UCard v-for="guestbook in guestbooks" :key="guestbook.id" class="flex-grow">
       <template #header>
         <div class="flex justify-between items-center">
           Gästebuch: {{ guestbook.title }}
@@ -35,5 +35,5 @@ const guestbooks = ref<Guestbook[]>();
 
 onMounted(async () => {
   guestbooks.value = await getAvailableGuestbooks();
-})
+});
 </script>

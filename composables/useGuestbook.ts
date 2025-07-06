@@ -1,7 +1,7 @@
-import { v7 as uuidV7 } from 'uuid';
+import type { Guestbook } from '~/utils/guestbook';
 import dayjs from 'dayjs';
 import { createStore, del, get, set, values } from 'idb-keyval';
-import type { Guestbook } from '~/utils/guestbook';
+import { v7 as uuidV7 } from 'uuid';
 
 const guestbookStore = createStore('guestbooks', 'guestbook-store');
 
@@ -11,7 +11,7 @@ export function useGuestbook() {
 
   const guestbookLoading = ref<boolean>();
   const guestbook = ref<Guestbook>();
-  
+
   watch(guestbookId, async () => {
     guestbookLoading.value = true;
     try {
@@ -20,10 +20,11 @@ export function useGuestbook() {
         return;
       }
       guestbook.value = await get<Guestbook>(guestbookId.value, guestbookStore);
-    } finally {
+    }
+    finally {
       guestbookLoading.value = false;
     }
-  }, { immediate: true })
+  }, { immediate: true });
 
   async function getAvailableGuestbooks() {
     return await values<Guestbook>(guestbookStore);
@@ -33,7 +34,7 @@ export function useGuestbook() {
     if (!guestbook.value) {
       throw new Error('Eintrag kann nicht eingetragen werden, da kein Gästebuch geladen ist');
     }
-    const updatedGuestbook = { ...guestbook.value, pages: [...guestbook.value.pages ]};
+    const updatedGuestbook = { ...guestbook.value, pages: [...guestbook.value.pages] };
     updatedGuestbook.pages.push({ ...page, createdAt: dayjs().toISOString() });
     await set(updatedGuestbook.id, updatedGuestbook, guestbookStore);
     guestbook.value = updatedGuestbook;
@@ -55,7 +56,6 @@ export function useGuestbook() {
     guestbook.value = undefined;
   }
 
-
   return {
     guestbookLoading,
     getAvailableGuestbooks,
@@ -64,5 +64,5 @@ export function useGuestbook() {
     createGuestbook,
     updateGuestbook,
     deleteGuestbook,
-  }
+  };
 }
