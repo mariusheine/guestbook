@@ -36,8 +36,7 @@ export function useGuestbook() {
     }
     const updatedGuestbook = { ...guestbook.value, pages: [...guestbook.value.pages] };
     updatedGuestbook.pages.push({ ...page, createdAt: dayjs().toISOString() });
-    await set(updatedGuestbook.id, JSON.parse(JSON.stringify(updatedGuestbook)), guestbookStore);
-    guestbook.value = updatedGuestbook;
+    await updateGuestbook(updatedGuestbook);
   }
 
   async function createGuestbook(newGuestbook: Pick<Guestbook, 'title' | 'description'>) {
@@ -47,6 +46,7 @@ export function useGuestbook() {
   }
 
   async function updateGuestbook(updatedGuestbook: Guestbook) {
+    updatedGuestbook = JSON.parse(JSON.stringify(updatedGuestbook));
     await set(updatedGuestbook.id, updatedGuestbook, guestbookStore);
     guestbook.value = updatedGuestbook;
   }
