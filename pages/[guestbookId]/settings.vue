@@ -26,7 +26,7 @@
         :loading="saving"
         @click="save"
       >
-        Erstellen
+        Speichern
       </UButton>
       <UButton
         class="justify-center disabled:bg-gray-500"
