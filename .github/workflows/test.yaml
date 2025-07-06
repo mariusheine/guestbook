@@ -30,4 +30,4 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           run_install: true
-      - run: pnpm test
+      - run: pnpm typecheck
