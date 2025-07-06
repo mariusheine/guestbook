@@ -1,14 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2025-07-06',
   devtools: { enabled: true },
-  modules: ['@nuxt/fonts', '@nuxt/ui'],
-  runtimeConfig: {
-    database: './.data/guestbook.db',
-    migrationsPath: './migrations',
-    openaiApiKey: '',
-    public: {
-      partyContext: ''
-    }
+  telemetry: false,
+  ssr: false,
+  modules: ['@nuxt/ui', '@nuxt/fonts'],
+  css: ['~/assets/css/main.css'],
+  app: {
+    head: {
+      title: 'Guestbook',
+      titleTemplate: '%s',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+    },
   },
-})
+  typescript: {
+    strict: true,
+  },
+});

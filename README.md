@@ -1,75 +1,12 @@
-# Nuxt 3 Minimal Starter
+# Guestbook
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A party guestbook with AI image generation (openAI's DALL-E) on each guestbook entry.
 
-## Setup
+Use it on https://mariusheine.github.io/guestbook
 
-Make sure to install the dependencies:
+It runs completely in the browser, which means:
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Guestbooks are stored on your client in the browser storage
+- A guestbook can only be viewed and changed on the browser and computer where it was created (export/import will come)
+- OpenAI api calls are also performed on the client, which means we need to ask and store your OpenAI API key in the browser storage
+  - get your API key from https://platform.openai.com/api-keys
