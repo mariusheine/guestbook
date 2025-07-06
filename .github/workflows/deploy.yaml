@@ -21,10 +21,10 @@ jobs:
         with:
           run_install: true
       - run: NUXT_APP_BASE_URL=/guestbook/ pnpm build --preset github_pages
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: packages/former/dist-playground
+          path: ./.output/public
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
