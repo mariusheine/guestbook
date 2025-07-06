@@ -59,7 +59,7 @@
 <script setup lang="ts">
 const { guestbook } = useGuestbook();
 
-const pages = computed(() => (guestbook.value?.pages || []).reverse());
+const pages = computed(() => [...(guestbook.value?.pages || [])].reverse());
 
 const pageNumber = ref(1);
 const page = computed(() => {
