@@ -51,6 +51,7 @@ async function save() {
   try {
     saving.value = true;
     await updateGuestbook(guestbook.value);
+    useToast().add({ title: 'Gästebuch aktualisiert', color: 'success' });
     await useRouter().replace(`/${guestbook.value.id}`);
   }
   finally {
@@ -69,7 +70,8 @@ async function remove() {
   saving.value = true;
   try {
     await deleteGuestbook(guestbook.value);
-    await useRouter().replace('');
+    useToast().add({ title: 'Gästebuch gelöscht', color: 'success' });
+    await useRouter().replace('/');
   }
   finally {
     saving.value = false;

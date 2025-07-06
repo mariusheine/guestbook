@@ -148,6 +148,7 @@ const saving = ref(false);
 
 async function save() {
   if (!guestbook.value || !schema.safeParse(page.value)) {
+    useToast().add({ title: 'Fehlende Eingaben', color: 'error' });
     return;
   }
   try {

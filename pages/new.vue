@@ -4,7 +4,7 @@
       <h1>Dein neues Gästebuch</h1>
     </template>
     <div class="flex flex-col space-y-4">
-      <UFormField label="Titel" name="title">
+      <UFormField label="Titel" name="title" required>
         <UInput v-model="guestbook.title" class="w-full" />
       </UFormField>
 
@@ -37,25 +37,26 @@ import { z } from 'zod';
 const { createGuestbook } = useGuestbook();
 
 const schema = z.object({
-  title: z.string(),
+  title: z.string().nonempty(),
   description: z.string().optional(),
 });
 
 type Schema = z.output<typeof schema>;
 
-const guestbook = reactive<Schema>({
+const guestbook = ref<Schema>({
   title: '',
 });
 
 const saving = ref(false);
 
 async function save() {
-  if (!schema.safeParse(guestbook).success) {
+  if (!schema.safeParse(guestbook.value).success) {
+    useToast().add({ title: 'Fehlende Eingaben', color: 'error' });
     return;
   }
   try {
     saving.value = true;
-    const createdGuestbook = await createGuestbook(guestbook);
+    const createdGuestbook = await createGuestbook(guestbook.value);
     await useRouter().replace(`/${createdGuestbook.id}`);
   }
   finally {
