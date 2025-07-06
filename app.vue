@@ -1,8 +1,9 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-    <UNotifications />
-  </NuxtLayout>
+  <UApp>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +14,7 @@ onErrorCaptured((error) => {
   toast.add({
     title: 'Error occurred',
     description: error.message,
-    color: 'red',
+    color: 'error',
   });
 });
 </script>
