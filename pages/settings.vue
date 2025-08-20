@@ -78,10 +78,10 @@ function inMegabyte(value?: number) {
 }
 
 function inPercent(dividend?: number, divisor?: number) {
-  if (dividend === undefined || divisor === undefined) {
+  if (dividend === undefined || divisor === undefined || divisor === 0) {
     return 'nicht berechenbar';
   }
-  return `${dividend / divisor}%`;
+  return `${Math.round((dividend / divisor) * 100 * 100) / 100}%`;
 }
 
 const storageDetails = computed(() => {
@@ -90,7 +90,7 @@ const storageDetails = computed(() => {
   }
   return {
     used: inMegabyte(storageEstimation.value.usage),
-    usedRelative: inPercent(storageEstimation.value.usage, storageEstimation.value.usage),
+    usedRelative: inPercent(storageEstimation.value.usage, storageEstimation.value.quota),
     total: inMegabyte(storageEstimation.value.quota),
     free: inMegabyte((storageEstimation.value.quota ?? Number.NaN) - (storageEstimation.value.usage ?? Number.NaN)),
   };
