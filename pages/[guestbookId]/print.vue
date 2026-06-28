@@ -1,9 +1,11 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <div class="w-full print:hidden">
-      <h1>{{ guestbook.title }}</h1>
-      <p v-if="guestbook.description">
+    <div class="w-full text-center space-y-4 print:h-screen print:flex print:flex-col print:items-center print:justify-center print:not-last:break-after-page print:break-inside-avoid">
+      <h1 class="text-5xl font-bold text-highlighted">
+        {{ guestbook.title }}
+      </h1>
+      <p v-if="guestbook.description" class="text-xl text-muted">
         {{ guestbook.description }}
       </p>
     </div>
