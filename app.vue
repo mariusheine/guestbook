@@ -18,6 +18,8 @@ onErrorCaptured((error) => {
   });
 });
 
+const route = useRoute();
+
 let hadDarkClass = false;
 
 onMounted(() => {
@@ -28,6 +30,9 @@ onMounted(() => {
   window.addEventListener('afterprint', () => {
     if (hadDarkClass) {
       document.documentElement.classList.add('dark');
+    }
+    if (route.path.endsWith('/print')) {
+      navigateTo(route.path.replace(/\/print$/, ''));
     }
   });
 });

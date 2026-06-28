@@ -1,14 +1,11 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <div class="w-full flex justify-between items-center print:hidden">
-      <div>
-        <h1>{{ guestbook.title }}</h1>
-        <p v-if="guestbook.description">
-          {{ guestbook.description }}
-        </p>
-      </div>
-      <UButton icon="i-heroicons-printer" label="Als PDF exportieren" @click="print" />
+    <div class="w-full print:hidden">
+      <h1>{{ guestbook.title }}</h1>
+      <p v-if="guestbook.description">
+        {{ guestbook.description }}
+      </p>
     </div>
     <div
       v-for="page in guestbook.pages"
@@ -39,7 +36,13 @@
 <script setup lang="ts">
 const { guestbook } = useGuestbook();
 
-function print() {
-  window.print();
-}
+let hasAutoPrinted = false;
+
+watch(guestbook, async (value) => {
+  if (value && !hasAutoPrinted) {
+    hasAutoPrinted = true;
+    await nextTick();
+    window.print();
+  }
+}, { immediate: true });
 </script>
