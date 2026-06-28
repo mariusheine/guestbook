@@ -13,7 +13,7 @@
     <div
       v-for="page in guestbook.pages"
       :key="page.createdAt"
-      class="w-full print:h-screen print:flex print:flex-col print:items-center print:justify-center print:break-after-page print:break-inside-avoid"
+      class="w-full print:h-screen print:flex print:flex-col print:items-center print:justify-center print:not-last:break-after-page print:break-inside-avoid"
     >
       <UCard class="w-full print:max-w-2xl">
         <template #header>
