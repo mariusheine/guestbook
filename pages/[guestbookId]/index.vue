@@ -1,7 +1,10 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <h1>{{ guestbook.title }}</h1>
+    <div class="w-full flex justify-between items-center">
+      <h1>{{ guestbook.title }}</h1>
+      <UButton icon="i-heroicons-printer" label="Als PDF exportieren" :to="`/${guestbook.id}/print`" />
+    </div>
     <div v-if="pages.length > 0" class="w-full max-h-full flex flex-nowrap gap-4 items-center">
       <UButton icon="i-heroicons-chevron-left" :disabled="pageNumber <= 1" class="h-14 w-14 flex items-center justify-center disabled:bg-gray-500" @click="pageNumber = pageNumber - 1" />
       <UCard class="flex-grow">
