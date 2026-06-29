@@ -3,7 +3,11 @@
     <UNavigationMenu
       :items
       class="border-b border-gray-200 dark:border-gray-800 print:hidden"
-    />
+    >
+      <template #list-trailing>
+        <UColorModeSwitch class="mx-2.5" />
+      </template>
+    </UNavigationMenu>
     <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0">
       <UAlert
         v-if="!openAiApiKey"
