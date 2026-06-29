@@ -1,7 +1,6 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <h1>{{ guestbook.title }}</h1>
     <div class="flex flex-col md:flex-row gap-4 items-start">
       <UCard class="w-full md:flex-1">
         <template #header>

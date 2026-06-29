@@ -5,7 +5,12 @@
       class="border-b border-gray-200 dark:border-gray-800 print:hidden"
     >
       <template #list-trailing>
-        <UColorModeSwitch class="mx-2.5" />
+        <div class="flex flex-row">
+          <ULink v-if="guestbook" to="/">
+            Zur Startseite
+          </ULink>
+          <UColorModeSwitch class="mx-2.5" />
+        </div>
       </template>
     </UNavigationMenu>
     <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0">
@@ -34,11 +39,7 @@ const { guestbook } = useGuestbook();
 const items = computed<NavigationMenuItem[]>(() => guestbook.value
   ? [
       {
-        label: 'Startseite',
-        to: '/',
-      },
-      {
-        label: 'Party Gästebuch',
+        label: `Gästebuch: ${guestbook.value.title}`,
         to: `/${guestbook.value.id}`,
       },
       {
