@@ -75,7 +75,7 @@
         </div>
         <UProgress v-if="renderingImage" animation="swing" />
         <template v-else-if="image">
-          <img :src="image">
+          <img :src="image.imageUrl">
 
           <UButton
             class="justify-center disabled:bg-gray-500"
@@ -126,7 +126,11 @@ const image = computed(() => {
   if (selectedImage.value < 0) {
     return undefined;
   }
-  return imageStack.value[selectedImage.value].imageUrl;
+  const image = imageStack.value[selectedImage.value];
+  if (!image) {
+    return undefined;
+  }
+  return image;
 });
 
 async function generateImage() {
@@ -147,13 +151,13 @@ async function generateImage() {
 const saving = ref(false);
 
 async function save() {
-  if (!guestbook.value || !schema.safeParse(page.value).success) {
+  if (!guestbook.value || !schema.safeParse(page.value).success || !image.value) {
     useToast().add({ title: 'Fehlende Eingaben', color: 'error' });
     return;
   }
   try {
     saving.value = true;
-    const { imageUrl, context } = imageStack.value[selectedImage.value];
+    const { imageUrl, context } = image.value;
     await addPage({ ...page.value, image: imageUrl, imageContext: context });
     await useRouter().replace(`/${guestbook.value.id}`);
   }

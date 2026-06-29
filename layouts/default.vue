@@ -2,14 +2,15 @@
   <div class="flex h-lvh flex-col">
     <UNavigationMenu
       :items
-      class="border-b border-gray-200 dark:border-gray-800"
+      class="border-b border-gray-200 dark:border-gray-800 print:hidden"
     />
-    <main class="flex flex-col gap-4 items-center p-8">
+    <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0">
       <UAlert
         v-if="!openAiApiKey"
         color="error"
         title="OpenAI API Key fehlt!"
         description="Dieser Key muss gesetzt werden, damit die Bildgenerierung funktioniert!" variant="subtle"
+        class="print:hidden"
         :actions="[
           {
             label: 'Zu den Einstellungen',

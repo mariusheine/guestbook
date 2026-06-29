@@ -1,0 +1,4 @@
+- use pnpm
+- use pnpx
+- use node 24
+- this webapp runs client side only without any backend
