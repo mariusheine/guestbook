@@ -151,7 +151,7 @@ async function generateImage() {
 const saving = ref(false);
 
 async function save() {
-  if (!guestbook.value || !schema.safeParse(page.value) || !image.value) {
+  if (!guestbook.value || !schema.safeParse(page.value).success || !image.value) {
     useToast().add({ title: 'Fehlende Eingaben', color: 'error' });
     return;
   }
