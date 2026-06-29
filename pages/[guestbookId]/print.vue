@@ -27,7 +27,9 @@
           </div>
         </template>
         <div class="space-y-4 text-center">
-          <div>{{ page.content }}</div>
+          <div class="whitespace-pre-line">
+            {{ page.content }}
+          </div>
           <img :src="page.image" class="mx-auto">
         </div>
       </UCard>

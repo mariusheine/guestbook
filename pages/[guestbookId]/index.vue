@@ -31,7 +31,9 @@
         </template>
         <template v-if="page">
           <div class="space-y-4 text-center">
-            <div>{{ page.content }}</div>
+            <div class="whitespace-pre-line">
+              {{ page.content }}
+            </div>
             <img :src="page.image" class="mx-auto">
             <details>
               <summary>Zusätzlicher Kontext für Bildgenerierung</summary>
