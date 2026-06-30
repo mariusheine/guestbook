@@ -32,15 +32,13 @@
       </UFormField>
 
       <UFormField label="Bildqualität" name="imageQuality">
-        <USelect
+        <URadioGroup
           v-model="guestbook.imageQuality"
-          :options="[
+          :items="[
             { label: 'Niedrig (schnell)', value: 'low' },
             { label: 'Mittel', value: 'medium' },
             { label: 'Hoch (langsam)', value: 'high' },
           ]"
-          value-key="value"
-          class="w-48"
         />
       </UFormField>
 
