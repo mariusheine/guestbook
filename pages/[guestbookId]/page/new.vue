@@ -123,11 +123,6 @@ const page = ref<Schema>({
 
 const renderingImage = ref(false);
 const imageContext = ref<string>('');
-watch(guestbook, () => {
-  if (guestbook.value && guestbook.value.description) {
-    imageContext.value = guestbook.value.description;
-  }
-}, { immediate: true });
 
 const imageStack = ref<{ imageUrl: string; context: string }[]>([]);
 const selectedImage = ref<number>(-1);
