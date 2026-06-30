@@ -1,8 +1,11 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <div class="flex flex-col md:flex-row gap-4 items-start">
-      <UCard class="w-full md:flex-1">
+    <div class="flex flex-col md:flex-row gap-4 w-full md:flex-1 md:min-h-0">
+      <UCard
+        class="w-full md:flex-1 md:flex md:flex-col md:min-h-0"
+        :ui="{ body: 'md:flex-1 md:min-h-0 md:overflow-y-auto' }"
+      >
         <template #header>
           <h2>Dein Gästebucheintrag</h2>
         </template>
@@ -52,11 +55,14 @@
           </UButton>
         </div>
       </UCard>
-      <UCard class="w-full md:flex-1">
+      <UCard
+        class="w-full md:flex-1 md:flex md:flex-col md:min-h-0"
+        :ui="{ body: 'md:flex-1 md:min-h-0 md:flex md:flex-col md:overflow-y-auto' }"
+      >
         <template #header>
           <h1>Das Bild zu deinem Gästebucheintrag</h1>
         </template>
-        <div class="flex flex-col space-y-4">
+        <div class="flex flex-col space-y-4 md:flex-1 md:min-h-0">
           <div v-if="imageStack.length > 0" class="flex gap-4 justify-center">
             <UButton
               :disabled="renderingImage || selectedImage <= 0"
@@ -75,7 +81,7 @@
           </div>
           <UProgress v-if="renderingImage" animation="swing" />
           <template v-else-if="image">
-            <img :src="image.imageUrl">
+            <img :src="image.imageUrl" class="w-full md:flex-1 md:min-h-0 object-contain">
 
             <UButton
               class="justify-center disabled:bg-gray-500"
@@ -87,7 +93,7 @@
           </template>
           <div
             v-else
-            class="flex flex-col items-center justify-center gap-2 aspect-square border-2 border-dashed border-gray-300 rounded-lg text-gray-400"
+            class="flex flex-col items-center justify-center gap-2 aspect-square md:aspect-auto md:flex-1 md:min-h-0 border-2 border-dashed border-gray-300 rounded-lg text-gray-400"
           >
             <UIcon name="i-heroicons-photo" class="size-16" />
             <span>Noch kein Bild vorhanden</span>

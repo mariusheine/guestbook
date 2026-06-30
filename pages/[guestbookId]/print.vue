@@ -22,13 +22,13 @@
 <script setup lang="ts">
 const { guestbook } = useGuestbook();
 
-let hasAutoPrinted = false;
+// let hasAutoPrinted = false;
 
-watch(guestbook, async (value) => {
-  if (value && !hasAutoPrinted) {
-    hasAutoPrinted = true;
-    await nextTick();
-    window.print();
-  }
-}, { immediate: true });
+// watch(guestbook, async (value) => {
+//   if (value && !hasAutoPrinted) {
+//     hasAutoPrinted = true;
+//     await nextTick();
+//     window.print();
+//   }
+// }, { immediate: true });
 </script>

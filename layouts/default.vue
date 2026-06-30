@@ -13,7 +13,7 @@
         </div>
       </template>
     </UNavigationMenu>
-    <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0">
+    <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0 md:min-h-0 md:flex-1">
       <UAlert
         v-if="!openAiApiKey"
         color="error"
@@ -45,6 +45,10 @@ const items = computed<NavigationMenuItem[]>(() => guestbook.value
       {
         label: 'Neuer Gästebucheintrag',
         to: `/${guestbook.value.id}/page/new`,
+      },
+      {
+        label: 'Drucken',
+        to: `/${guestbook.value.id}/print`,
       },
       {
         label: 'Einstellungen',
