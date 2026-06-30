@@ -1,92 +1,106 @@
 <template>
   <LoadingIndicator v-if="!guestbook" />
   <template v-else>
-    <h1>{{ guestbook.title }}</h1>
-    <UCard class="w-full">
-      <template #header>
-        <h2>Dein Gästebucheintrag</h2>
-      </template>
-      <div class="flex flex-col space-y-4">
-        <UFormField label="Autor" name="author">
-          <UInput v-model="page.author" class="w-full" />
-        </UFormField>
+    <div class="flex flex-col md:flex-row gap-4 w-full md:flex-1 md:min-h-0">
+      <UCard
+        class="w-full md:flex-1 md:flex md:flex-col md:min-h-0"
+        :ui="{ body: 'md:flex-1 md:min-h-0 md:overflow-y-auto' }"
+      >
+        <template #header>
+          <h2>Dein Gästebucheintrag</h2>
+        </template>
+        <div class="flex flex-col space-y-4">
+          <UFormField label="Autor" name="author">
+            <UInput v-model="page.author" class="w-full" />
+          </UFormField>
 
-        <UFormField label="Eintrag" name="content">
-          <UTextarea
-            v-model="page.content"
-            :rows="6"
-            class="w-full"
-            resize
-            color="primary"
-            variant="outline"
-            placeholder="Gib hier deinen Gästebucheintrag ein..."
-          />
-        </UFormField>
+          <UFormField label="Eintrag" name="content">
+            <UTextarea
+              v-model="page.content"
+              :rows="6"
+              class="w-full"
+              resize
+              color="primary"
+              variant="outline"
+              placeholder="Gib hier deinen Gästebucheintrag ein..."
+            />
+          </UFormField>
 
-        <div class="text-gray-500">
-          Zu deinem Eintrag wird nach dem Absenden ein Bild mit Hilfe von
-          <a href="https://openai.com/index/dall-e-3/" target="_blank">DALL·E 3</a>
-          ein Bild erstellt. Du kannst unabhängig von deinem Gästebucheintrag für
-          die Bildgenerierung zusätzlichen Kontext angeben. Sei bitte vorsichtig
-          mit Namen und sehr persönlichen Informationen!
-        </div>
-        <details>
-          <summary>Zusätzlicher Kontext für Bildgenerierung</summary>
-          <UTextarea
-            v-model="imageContext"
-            :rows="5"
-            class="w-full"
-            resize
-            color="primary"
-            variant="outline"
-            placeholder="Gib hier zusätzliche Informationen für die Bildgenerierung ein..."
-          />
-        </details>
-
-        <UButton
-          class="justify-center disabled:bg-gray-500"
-          :loading="renderingImage || saving"
-          @click="generateImage"
-        >
-          {{ image ? "Nochmal versuchen" : "Absenden" }}
-        </UButton>
-      </div>
-    </UCard>
-    <UCard class="w-full">
-      <template #header>
-        <h1>Das Bild zu deinem Gästebucheintrag</h1>
-      </template>
-      <div class="flex flex-col space-y-4">
-        <div class="flex gap-4 justify-center">
-          <UButton
-            :disabled="renderingImage || selectedImage <= 0"
-            class="disabled:bg-gray-500"
-            @click="selectedImage = selectedImage - 1"
-          >
-            Vorheriges Bild
-          </UButton>
-          <UButton
-            :disabled="renderingImage || selectedImage >= imageStack.length - 1"
-            class="disabled:bg-gray-500"
-            @click="selectedImage = selectedImage + 1"
-          >
-            Nächstes Bild
-          </UButton>
-        </div>
-        <UProgress v-if="renderingImage" animation="swing" />
-        <template v-else-if="image">
-          <img :src="image.imageUrl">
+          <div class="text-gray-500">
+            Zu deinem Eintrag wird nach dem Absenden ein Bild mit Hilfe von
+            <a href="https://openai.com/index/dall-e-3/" target="_blank">DALL·E 3</a>
+            ein Bild erstellt. Du kannst unabhängig von deinem Gästebucheintrag für
+            die Bildgenerierung zusätzlichen Kontext angeben. Sei bitte vorsichtig
+            mit Namen und sehr persönlichen Informationen!
+          </div>
+          <details>
+            <summary>Zusätzlicher Kontext für Bildgenerierung</summary>
+            <UTextarea
+              v-model="imageContext"
+              :rows="5"
+              class="w-full"
+              resize
+              color="primary"
+              variant="outline"
+              placeholder="Gib hier zusätzliche Informationen für die Bildgenerierung ein..."
+            />
+          </details>
 
           <UButton
             class="justify-center disabled:bg-gray-500"
-            :loading="saving"
-            @click="save"
+            :loading="renderingImage || saving"
+            @click="generateImage"
           >
-            Eintragen
+            {{ image ? "Nochmal versuchen" : "Absenden" }}
           </UButton>
+        </div>
+      </UCard>
+      <UCard
+        class="w-full md:flex-1 md:flex md:flex-col md:min-h-0"
+        :ui="{ body: 'md:flex-1 md:min-h-0 md:flex md:flex-col md:overflow-y-auto' }"
+      >
+        <template #header>
+          <h1>Das Bild zu deinem Gästebucheintrag</h1>
         </template>
-      </div>
-    </UCard>
+        <div class="flex flex-col space-y-4 md:flex-1 md:min-h-0">
+          <div v-if="imageStack.length > 0" class="flex gap-4 justify-center">
+            <UButton
+              :disabled="renderingImage || selectedImage <= 0"
+              class="disabled:bg-gray-500"
+              @click="selectedImage = selectedImage - 1"
+            >
+              Vorheriges Bild
+            </UButton>
+            <UButton
+              :disabled="renderingImage || selectedImage >= imageStack.length - 1"
+              class="disabled:bg-gray-500"
+              @click="selectedImage = selectedImage + 1"
+            >
+              Nächstes Bild
+            </UButton>
+          </div>
+          <UProgress v-if="renderingImage" animation="swing" />
+          <template v-else-if="image">
+            <img :src="image.imageUrl" class="w-full md:flex-1 md:min-h-0 object-contain">
+
+            <UButton
+              class="justify-center disabled:bg-gray-500"
+              :loading="saving"
+              @click="save"
+            >
+              Eintragen
+            </UButton>
+          </template>
+          <div
+            v-else
+            class="flex flex-col items-center justify-center gap-2 aspect-square md:aspect-auto md:flex-1 md:min-h-0 border-2 border-dashed border-gray-300 rounded-lg text-gray-400"
+          >
+            <UIcon name="i-heroicons-photo" class="size-16" />
+            <span>Noch kein Bild vorhanden</span>
+          </div>
+        </div>
+      </UCard>
+    </div>
   </template>
 </template>
 
@@ -136,7 +150,7 @@ const image = computed(() => {
 async function generateImage() {
   try {
     renderingImage.value = true;
-    const response = await requestImage(page.value.content, imageContext.value);
+    const response = await requestImage(page.value.content, imageContext.value, guestbook.value?.imageSize);
     imageStack.value.push({
       imageUrl: response.url,
       context: imageContext.value,

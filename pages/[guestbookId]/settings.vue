@@ -21,6 +21,14 @@
         />
       </UFormField>
 
+      <UFormField label="Bildgröße (Breite × Höhe, Vielfaches von 16)" name="imageSize">
+        <div class="flex items-center gap-2">
+          <UInput v-model="imageWidth" type="number" :step="16" min="16" class="w-32" />
+          <span>×</span>
+          <UInput v-model="imageHeight" type="number" :step="16" min="16" class="w-32" />
+        </div>
+      </UFormField>
+
       <UButton
         class="justify-center disabled:bg-gray-500"
         :loading="saving"
@@ -44,12 +52,23 @@ const { guestbook, updateGuestbook, deleteGuestbook } = useGuestbook();
 
 const saving = ref(false);
 
+const imageWidth = ref(defaultImageSize.width);
+const imageHeight = ref(defaultImageSize.height);
+watch(guestbook, () => {
+  imageWidth.value = guestbook.value?.imageSize?.width ?? defaultImageSize.width;
+  imageHeight.value = guestbook.value?.imageSize?.height ?? defaultImageSize.height;
+}, { immediate: true });
+
 async function save() {
   if (!guestbook.value) {
     return;
   }
   try {
     saving.value = true;
+    guestbook.value.imageSize = {
+      width: roundToMultipleOf16(imageWidth.value),
+      height: roundToMultipleOf16(imageHeight.value),
+    };
     await updateGuestbook(guestbook.value);
     useToast().add({ title: 'Gästebuch aktualisiert', color: 'success' });
     await useRouter().replace(`/${guestbook.value.id}`);

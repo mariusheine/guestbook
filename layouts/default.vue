@@ -3,8 +3,17 @@
     <UNavigationMenu
       :items
       class="border-b border-gray-200 dark:border-gray-800 print:hidden"
-    />
-    <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0">
+    >
+      <template #list-trailing>
+        <div class="flex flex-row">
+          <ULink v-if="guestbook" to="/">
+            Zur Startseite
+          </ULink>
+          <UColorModeSwitch class="mx-2.5" />
+        </div>
+      </template>
+    </UNavigationMenu>
+    <main class="flex flex-col gap-4 items-center p-8 print:gap-0 print:p-0 md:min-h-0 md:flex-1">
       <UAlert
         v-if="!openAiApiKey"
         color="error"
@@ -30,16 +39,16 @@ const { guestbook } = useGuestbook();
 const items = computed<NavigationMenuItem[]>(() => guestbook.value
   ? [
       {
-        label: 'Startseite',
-        to: '/',
-      },
-      {
-        label: 'Party Gästebuch',
+        label: `Gästebuch: ${guestbook.value.title}`,
         to: `/${guestbook.value.id}`,
       },
       {
         label: 'Neuer Gästebucheintrag',
         to: `/${guestbook.value.id}/page/new`,
+      },
+      {
+        label: 'Drucken',
+        to: `/${guestbook.value.id}/print`,
       },
       {
         label: 'Einstellungen',
