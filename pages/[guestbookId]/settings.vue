@@ -31,6 +31,19 @@
         />
       </UFormField>
 
+      <UFormField label="Bildqualität" name="imageQuality">
+        <USelect
+          v-model="guestbook.imageQuality"
+          :options="[
+            { label: 'Niedrig (schnell)', value: 'low' },
+            { label: 'Mittel', value: 'medium' },
+            { label: 'Hoch (langsam)', value: 'high' },
+          ]"
+          value-key="value"
+          class="w-48"
+        />
+      </UFormField>
+
       <UFormField label="Bildgröße (Breite × Höhe, Vielfaches von 16)" name="imageSize">
         <div class="flex items-center gap-2">
           <UInput v-model="imageWidth" type="number" :step="16" min="16" class="w-32" />
@@ -69,6 +82,9 @@ watch(guestbook, () => {
   imageHeight.value = guestbook.value?.imageSize?.height ?? defaultImageSize.height;
   if (guestbook.value && !guestbook.value.imageSystemPrompt) {
     guestbook.value.imageSystemPrompt = defaultImageSystemPrompt;
+  }
+  if (guestbook.value && !guestbook.value.imageQuality) {
+    guestbook.value.imageQuality = defaultImageQuality;
   }
 }, { immediate: true });
 
