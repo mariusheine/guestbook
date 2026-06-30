@@ -145,7 +145,7 @@ const image = computed(() => {
 async function generateImage() {
   try {
     renderingImage.value = true;
-    const response = await requestImage(page.value.content, imageContext.value, guestbook.value?.imageSize, guestbook.value?.imageSystemPrompt);
+    const response = await requestImage(page.value.content, imageContext.value, guestbook.value?.imageSize, guestbook.value?.imageSystemPrompt, guestbook.value?.imageQuality);
     imageStack.value.push({
       imageUrl: response.url,
       context: imageContext.value,

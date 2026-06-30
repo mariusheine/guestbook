@@ -7,6 +7,7 @@ export const openAiApiKey = useLocalStorage<string | undefined>(
 );
 
 export const defaultImageSize = { width: 1920, height: 1072 };
+export const defaultImageQuality = 'medium' as const;
 
 export const defaultImageSystemPrompt = `We are filling out a page on a party guestbook. We want our entry to be enriched by a nice image based on the following information:`;
 
@@ -26,18 +27,19 @@ export function useOpenAi() {
   return openai;
 }
 
-export async function requestImage(prompt: string, additionalContext: string, imageSize = defaultImageSize, systemPrompt = defaultImageSystemPrompt) {
+export async function requestImage(prompt: string, additionalContext: string, imageSize = defaultImageSize, systemPrompt = defaultImageSystemPrompt, quality: 'low' | 'medium' | 'high' = defaultImageQuality) {
   const width = roundToMultipleOf16(imageSize.width);
   const height = roundToMultipleOf16(imageSize.height);
   const response = await useOpenAi().images.generate({
     prompt: `${systemPrompt}
-    
+
     ${prompt}
 
     ${additionalContext}.`,
     n: 1,
     size: `${width}x${height}`,
     model: 'gpt-image-2',
+    quality,
   });
   const image = response.data?.[0];
   if (!image?.b64_json) {
