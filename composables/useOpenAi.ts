@@ -8,6 +8,8 @@ export const openAiApiKey = useLocalStorage<string | undefined>(
 
 export const defaultImageSize = { width: 1920, height: 1072 };
 
+export const defaultImageSystemPrompt = `We are filling out a page on a party guestbook. We want our entry to be enriched by a nice image based on the following information:`;
+
 // the OpenAI image API requires width and height to be multiples of 16
 export function roundToMultipleOf16(value: number) {
   return Math.max(16, Math.round(value / 16) * 16);
@@ -24,14 +26,15 @@ export function useOpenAi() {
   return openai;
 }
 
-export async function requestImage(prompt: string, context: string, imageSize = defaultImageSize) {
+export async function requestImage(prompt: string, additionalContext: string, imageSize = defaultImageSize, systemPrompt = defaultImageSystemPrompt) {
   const width = roundToMultipleOf16(imageSize.width);
   const height = roundToMultipleOf16(imageSize.height);
   const response = await useOpenAi().images.generate({
-    prompt: `We are filling out a page on a party guestbook. We want our entry to be enriched by a nice image based on the following information:
+    prompt: `${systemPrompt}
+    
     ${prompt}
 
-    Here is some additional context: ${context}.`,
+    ${additionalContext}.`,
     n: 1,
     size: `${width}x${height}`,
     model: 'gpt-image-2',

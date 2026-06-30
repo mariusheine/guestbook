@@ -12,4 +12,5 @@ export interface Guestbook {
   pages: Page[];
   description?: string;
   imageSize?: { width: number; height: number };
+  imageSystemPrompt?: string;
 }

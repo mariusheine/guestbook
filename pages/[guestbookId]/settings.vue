@@ -21,6 +21,16 @@
         />
       </UFormField>
 
+      <UFormField label="System-Prompt für Bildgenerierung" name="imageSystemPrompt">
+        <UTextarea
+          v-model="guestbook.imageSystemPrompt"
+          :rows="6"
+          class="w-full"
+          resize
+          placeholder="System-Prompt für die Bildgenerierung..."
+        />
+      </UFormField>
+
       <UFormField label="Bildgröße (Breite × Höhe, Vielfaches von 16)" name="imageSize">
         <div class="flex items-center gap-2">
           <UInput v-model="imageWidth" type="number" :step="16" min="16" class="w-32" />
@@ -57,6 +67,9 @@ const imageHeight = ref(defaultImageSize.height);
 watch(guestbook, () => {
   imageWidth.value = guestbook.value?.imageSize?.width ?? defaultImageSize.width;
   imageHeight.value = guestbook.value?.imageSize?.height ?? defaultImageSize.height;
+  if (guestbook.value && !guestbook.value.imageSystemPrompt) {
+    guestbook.value.imageSystemPrompt = defaultImageSystemPrompt;
+  }
 }, { immediate: true });
 
 async function save() {
